@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 80 80">
+  <!-- Wheel outer border -->
+  <circle cx="40" cy="40" r="35" fill="#fff" stroke="#000" stroke-width="4"></circle>
+
+  <!-- Wheel slices -->
+  <path d="M40,40 L40,5 A35,35 0 0,1 70,22 Z" fill="#ff4d4f"></path>
+  <path d="M40,40 L70,22 A35,35 0 0,1 70,58 Z" fill="#40a9ff"></path>
+  <path d="M40,40 L70,58 A35,35 0 0,1 40,75 Z" fill="#73d13d"></path>
+  <path d="M40,40 L40,75 A35,35 0 0,1 10,58 Z" fill="#faad14"></path>
+  <path d="M40,40 L10,58 A35,35 0 0,1 10,22 Z" fill="#9254de"></path>
+  <path d="M40,40 L10,22 A35,35 0 0,1 40,5 Z" fill="#13c2c2"></path>
+
+  <!-- Center hub -->
+  <circle cx="40" cy="40" r="7" fill="#000"></circle>
+
+  <!-- Pointer -->
+  <polygon points="40,0 33,15 47,15" fill="#000"></polygon>
+</svg>
