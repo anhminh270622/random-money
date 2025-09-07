@@ -162,34 +162,16 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
       o.start();
       o.stop(ctx.currentTime + 0.09);
     };
+    const playClapRecord = () => {
+      const audio = new Audio("../../public/vo-tay.mp3"); // file gốc đặt trong public/
+      audio.currentTime = 0; // bắt đầu từ đầu
+      audio.play().catch(err => console.log("Không phát âm:", err));
 
-    const playWin = () => {
-      const ctx = audioCtxRef.current;
-      if (!ctx) return;
-      // "ting tong" 2 nốt dạng chuông: cao -> trầm, có chút ngân
-      const notes = [783.99, 523.25]; // G5 -> C5
-      let t = ctx.currentTime;
-      notes.forEach((freq) => {
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator(); // tạo hoà âm chuông
-        const gain = ctx.createGain();
-        osc1.type = "sine";
-        osc2.type = "sine";
-        osc1.frequency.value = freq;
-        osc2.frequency.value = freq * 2; // bội âm để ra tiếng chuông
-        osc2.detune.value = 10;
-        gain.gain.setValueAtTime(0.0001, t);
-        gain.gain.exponentialRampToValueAtTime(0.4, t + 0.03);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-        osc1.start(t);
-        osc2.start(t);
-        osc1.stop(t + 0.65);
-        osc2.stop(t + 0.65);
-        t += 0.32; // khoảng cách giữa "ting" và "tong"
-      });
+      // tự động dừng sau 5s
+      setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0; // reset lại về đầu
+      }, 2500);
     };
 
     const tick = (now) => {
@@ -215,7 +197,7 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
         angleRef.current = target;
         setAngle(target);
         setIsSpinning(false);
-        playWin();
+        playClapRecord();
         onFinished(segments[winIndex]);
       }
     };
