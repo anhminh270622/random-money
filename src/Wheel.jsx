@@ -8,7 +8,7 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
   const audioCtxRef = useRef(null);
   const lastTickIndexRef = useRef(null);
 
-  const size = 500;
+  const size = 350;
   const radius = size / 2;
   const arc = (2 * Math.PI) / segments.length;
   const POINTER_RAD = -Math.PI / 2; // 12 giờ
@@ -18,10 +18,12 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
     drawWheel(angle);
   }, [angle]);
 
+  const BORDER_WIDTH = 9;
+
   const drawOuterRing = (ctx) => {
     ctx.save();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#000";
+    ctx.lineWidth = BORDER_WIDTH; // mỏng hơn một nửa
+    ctx.strokeStyle = "#ffd700"; // viền vàng thay cho màu đen
     ctx.beginPath();
     ctx.arc(radius, radius, radius - ctx.lineWidth / 2, 0, 2 * Math.PI);
     ctx.stroke();
@@ -34,7 +36,7 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
     ctx.fillStyle = "#fff";
     ctx.strokeStyle = "#fff";
     ctx.lineWidth = 2;
-    const hubOuterR = 62;
+    const hubOuterR = 48; // giảm kích thước vòng trắng ngoài
     const baseY = radius - hubOuterR;
     ctx.beginPath();
     ctx.moveTo(radius, baseY - 18);      // đỉnh chỉ lên trên (12h)
@@ -48,19 +50,19 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
 
   const drawCenterHub = (ctx) => {
     ctx.beginPath();
-    ctx.arc(radius, radius, 62, 0, 2 * Math.PI);
+    ctx.arc(radius, radius, 48, 0, 2 * Math.PI); // giảm kích thước hub
     ctx.fillStyle = "#fff";
     ctx.fill();
 
     ctx.beginPath();
-    ctx.arc(radius, radius, 50, 0, 2 * Math.PI);
+    ctx.arc(radius, radius, 38, 0, 2 * Math.PI); // tăng bán kính vòng đen để viền trắng mỏng hơn
     ctx.fillStyle = "#000";
     ctx.fill();
 
     ctx.fillStyle = "#fff";
-    ctx.font = "bold 24px Arial";
+    ctx.font = "bold 18px Arial"; // chữ Spin nhỏ hơn
     ctx.textAlign = "center";
-    ctx.fillText("Spin", radius, radius + 8);
+    ctx.fillText("Quay", radius, radius + 8);
   };
 
   const drawWheel = (startAngle) => {
@@ -69,13 +71,14 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
     ctx.clearRect(0, 0, size, size);
 
     // các phần quạt
+    const rSlices = radius - BORDER_WIDTH / 2 - 1; // sát mép trong của viền vàng
     segments.forEach((text, i) => {
       const a0 = startAngle + i * arc;
 
       ctx.beginPath();
       ctx.fillStyle = colors[i % colors.length];
       ctx.moveTo(radius, radius);
-      ctx.arc(radius, radius, radius - 20, a0, a0 + arc);
+      ctx.arc(radius, radius, rSlices, a0, a0 + arc);
       ctx.closePath();
       ctx.fill();
 
@@ -86,8 +89,8 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
       ctx.beginPath();
       ctx.moveTo(radius, radius);
       ctx.lineTo(
-        radius + Math.cos(a0) * (radius - 20),
-        radius + Math.sin(a0) * (radius - 20)
+        radius + Math.cos(a0) * rSlices,
+        radius + Math.sin(a0) * rSlices
       );
       ctx.stroke();
       ctx.restore();
@@ -233,7 +236,7 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
     const dx = x - radius;
     const dy = y - radius;
     const distance = Math.hypot(dx, dy);
-    if (distance <= 50) spin(); // click vào nút tròn “Spin” ở giữa
+    if (distance <= 38) spin(); // khớp với bán kính hub mới (đen: 38)
   };
 
   return (
