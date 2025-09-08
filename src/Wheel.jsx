@@ -163,7 +163,7 @@ const Wheel = forwardRef(({ segments, colors, blacklist = [], onFinished }, ref)
       o.stop(ctx.currentTime + 0.09);
     };
     const playClapRecord = () => {
-      const audio = new Audio("../../public/vo-tay.mp3"); // file gốc đặt trong public/
+      const audio = new Audio("/vo-tay.mp3"); // file gốc đặt trong public/
       audio.currentTime = 0; // bắt đầu từ đầu
       audio.play().catch(err => console.log("Không phát âm:", err));
 
